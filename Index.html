@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaCart | Role-Based Commerce Suite</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="pattern-layer" aria-hidden="true"></div>
+
+  <header class="site-header glass">
+    <div class="container nav-wrap">
+      <a href="#home" class="logo" data-route-link="home">NovaCart</a>
+      <nav class="top-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-route="home">Home</button>
+        <button class="nav-link" data-route="catalog">Catalog</button>
+        <button class="nav-link" data-route="cart">Cart/Checkout</button>
+        <button class="nav-link" data-route="account">Account</button>
+        <button class="nav-link" data-route="tracking">Tracking</button>
+        <button id="workspace-nav" class="nav-link" data-route="workspace" hidden>Workspace</button>
+      </nav>
+      <div class="header-actions">
+        <label class="search-wrap" for="global-search">
+          <span class="sr-only">Search products</span>
+          <input id="global-search" type="search" placeholder="Search products, categories, tags..." />
+        </label>
+        <button id="wishlist-btn" class="pill-btn" aria-label="Open wishlist">Wishlist <span id="wishlist-count">0</span></button>
+        <button id="cart-btn" class="pill-btn" aria-label="Open cart">Cart <span id="cart-count">0</span></button>
+        <span id="current-user-chip" class="user-chip" hidden>Guest</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page-wrap">
+    <section class="page active" data-page="home">
+      <div class="hero-grid">
+        <article class="glass panel">
+          <p class="badge">Role-Aware Platform</p>
+          <h1>Access control for Users, Vendors, Employees, and Admins.</h1>
+          <p class="hero-copy">NovaCart now supports role-based access to interfaces and operational modules, with employee-limited admin tooling and vendor-specific workspaces.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" data-route="catalog">Shop Collection</button>
+            <button class="ghost-btn" data-route="account">Login & Access</button>
+          </div>
+        </article>
+        <article class="glass panel">
+          <h3>Today at a glance</h3>
+          <ul class="stats-list" id="home-stats"></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" data-page="catalog">
+      <div class="section-head">
+        <h2>Product Listing / Catalog</h2>
+        <div class="catalog-meta" id="catalog-meta">0 products</div>
+      </div>
+      <div id="product-grid" class="product-grid"></div>
+    </section>
+
+    <section class="page" data-page="details">
+      <div id="details-container" class="glass details-card"></div>
+    </section>
+
+    <section class="page" data-page="cart">
+      <div class="checkout-layout">
+        <article class="glass panel">
+          <div class="section-head"><h2>Cart</h2></div>
+          <ul id="cart-items" class="list"></ul>
+          <p class="total-row">Subtotal: <strong id="cart-subtotal">₦0.00</strong></p>
+          <p class="muted">Estimated Tax (8%): <strong id="cart-tax">₦0.00</strong></p>
+          <p class="muted">Grand Total: <strong id="cart-grand">₦0.00</strong></p>
+        </article>
+
+        <article class="glass panel">
+          <div class="section-head"><h2>Checkout & Payment Gateway</h2></div>
+          <form id="checkout-form" class="form-grid">
+            <label>Full Name <input type="text" id="customer-name" required /></label>
+            <label>Shipping Address <input type="text" id="shipping-address" required /></label>
+            <label>Payment Method
+              <select id="payment-method" required>
+                <option value="">Select method</option>
+                <option value="Credit/Debit Card">Credit/Debit Card</option>
+                <option value="UPI">UPI</option>
+                <option value="Wallet">Wallet</option>
+                <option value="Net Banking">Net Banking</option>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+              </select>
+            </label>
+            <label>Coupon Code <input type="text" id="coupon" placeholder="WELCOME10" /></label>
+            <button type="submit" class="primary-btn">Pay & Place Order</button>
+          </form>
+          <p id="checkout-message" class="muted"></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" data-page="account">
+      <div class="split-grid">
+        <article class="glass panel">
+          <div class="section-head"><h2>User Login / Register</h2></div>
+          <form id="login-form" class="form-grid">
+            <label>Email <input type="email" id="login-email" required /></label>
+            <label>Password <input type="password" id="login-password" required minlength="6" /></label>
+            <button type="submit" class="primary-btn">Sign In</button>
+          </form>
+          <form id="register-form" class="form-grid">
+            <label>Name <input type="text" name="register-name" required /></label>
+            <label>Email <input type="email" name="register-email" required /></label>
+            <label>Password <input type="password" name="register-password" required minlength="6" /></label>
+            <button type="submit" class="ghost-btn">Register</button>
+          </form>
+          <p id="account-status" class="muted">Not signed in.</p>
+          <button id="user-logout-btn" class="small-btn danger" type="button" hidden>Logout User</button>
+        </article>
+
+        <article class="glass panel">
+          <div class="section-head"><h2>User Profile</h2></div>
+          <div class="profile-box">
+            <img id="user-avatar-preview" class="avatar" src="https://via.placeholder.com/120x120.png?text=User" alt="User avatar" />
+            <div>
+              <p id="user-welcome" class="muted">Welcome, guest.</p>
+              <p class="muted">Signed in user: <strong id="user-display-name">Guest</strong></p>
+              <label>Upload profile picture <input id="user-avatar-upload" type="file" accept="image/*" /></label>
+            </div>
+          </div>
+        </article>
+
+        <article id="role-access-panel" class="glass panel role-panel">
+          <div class="section-head"><h2>Role Access Portal</h2></div>
+          <div class="auth-grid">
+            <form id="role-register-form" class="form-grid">
+              <h3>Role Register</h3>
+              <label>Role
+                <select id="role-register-select" required>
+                  <option value="">Select role</option>
+                  <option value="vendor">Vendor</option>
+                  <option value="staff">Staff</option>
+                  <option value="admin">Admin</option>
+                  <option value="super_admin">Super Admin</option>
+                  <option value="content_manager">Content Manager</option>
+                  <option value="marketing_manager">Marketing Manager</option>
+                  <option value="customer_support">Customer Support</option>
+                  <option value="logistics_shipping">Logistics / Shipping</option>
+                  <option value="accountant">Accountant</option>
+                </select>
+              </label>
+              <label>Name <input id="role-register-name" type="text" required /></label>
+              <label>Work Email <input id="role-register-email" type="email" required /></label>
+              <label>Password <input id="role-register-password" type="password" minlength="6" required /></label>
+              <button class="ghost-btn" type="submit">Register Role Account</button>
+            </form>
+
+            <form id="role-login-form" class="form-grid">
+              <h3>Role Login</h3>
+              <label>Work Email <input id="role-login-email" type="email" required /></label>
+              <label>Password <input id="role-login-password" type="password" minlength="6" required /></label>
+              <button class="primary-btn" type="submit">Login Role Account</button>
+            </form>
+          </div>
+
+          <div class="profile-box role-profile-box">
+            <img id="role-avatar-preview" class="avatar" src="https://via.placeholder.com/120x120.png?text=Role" alt="Role avatar" />
+            <div>
+              <p id="role-access-status" class="muted">Role workspace locked.</p>
+              <p id="role-welcome" class="muted">No role user signed in.</p>
+              <p class="muted">Active role user: <strong id="role-display-name">None</strong></p>
+              <label>Upload role profile picture <input id="role-avatar-upload" type="file" accept="image/*" /></label>
+            </div>
+          </div>
+
+          <div class="row">
+            <button id="open-workspace-btn" class="ghost-btn" type="button" hidden data-route="workspace">Open Workspace</button>
+            <button id="logout-role-btn" class="small-btn danger" type="button" hidden>Logout Role</button>
+          </div>
+        </article>
+
+        <article class="glass panel">
+          <div class="section-head"><h2>User Settings</h2></div>
+          <form id="user-settings-form" class="form-grid">
+            <label>Display Name <input type="text" id="setting-name" placeholder="Alex Carter" /></label>
+            <label>Phone <input type="tel" id="setting-phone" placeholder="+234-800-000-0000" /></label>
+            <label>Preferred Theme
+              <select id="setting-theme">
+                <option>Modern Light</option>
+                <option>Neo Dark</option>
+                <option>Pastel Grid</option>
+              </select>
+            </label>
+            <label>Notifications
+              <select id="setting-notify">
+                <option>Email + SMS</option>
+                <option>Email Only</option>
+                <option>Push Only</option>
+              </select>
+            </label>
+            <button class="ghost-btn" type="submit">Save Settings</button>
+          </form>
+          <p id="settings-status" class="muted">No changes saved yet.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="page" data-page="tracking">
+      <article class="glass panel narrow">
+        <div class="section-head"><h2>Order Tracking Status</h2></div>
+        <form id="tracking-form" class="form-grid inline">
+          <label>Order ID <input type="text" id="tracking-id" placeholder="NC-1001" required /></label>
+          <button type="submit" class="primary-btn">Track</button>
+        </form>
+        <p id="tracking-status" class="muted">Enter an order ID to view status.</p>
+      </article>
+    </section>
+
+    <section class="page" data-page="workspace">
+      <div class="section-head">
+        <h2>Role Workspace</h2>
+        <p id="workspace-role-badge" class="role-chip">Locked</p>
+      </div>
+      <div id="workspace-cards" class="admin-grid"></div>
+    </section>
+  </main>
+
+  <aside id="wishlist-panel" class="side-panel glass" aria-hidden="true">
+    <div class="panel-head"><h3>Wishlist</h3><button id="close-wishlist" aria-label="Close wishlist">✕</button></div>
+    <ul id="wishlist-items" class="list"></ul>
+  </aside>
+
+  <aside id="cart-panel" class="side-panel glass" aria-hidden="true">
+    <div class="panel-head"><h3>Quick Cart</h3><button id="close-cart" aria-label="Close cart">✕</button></div>
+    <ul id="quick-cart-items" class="list"></ul>
+    <div class="panel-foot">Total: <strong id="quick-total">₦0.00</strong></div>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>
